@@ -1,0 +1,87 @@
+create user Victor identified by 123;
+grant connect to victor;
+grant resource to victor;
+connect victor;
+
+/* Creating tables */
+
+create table Actores(
+    id_actor number not null,
+    actor varchar(25) not null,
+    CONSTRAINT actor_pk primary key (id_actor)
+);
+
+create table Generos(
+    genero varchar(25) not null,
+    id_genero number not null,
+    CONSTRAINT genero_pk primary key (id_genero)
+);
+
+create table Peliculas(
+    pelicula varchar(25) not null,
+    id_pelicula number not null,
+    pel_id_genero number not null,
+    CONSTRAINT pelicula_pk primary key (id_pelicula),
+    CONSTRAINT pelicula_fk foreign key (pel_id_genero)
+        references Generos(id_genero)
+);
+
+create table Peliculas_Actores(
+    peliact_id_actor number not null,
+    peliact_id_pelicula number not null,
+    personaje varchar(25),
+    papel varchar(25),
+    CONSTRAINT peliculas_actores_actor_fk foreign key (peliact_id_actor)
+        REFERENCES Actores(id_actor),
+    CONSTRAINT peliculas_actores_pelicula_fk foreign key (peliact_id_pelicula)
+        REFERENCES Peliculas(id_pelicula),
+    CONSTRAINT peliculas_actores_pk primary key (peliact_id_actor, peliact_id_pelicula)
+);
+
+/* Inserción de datos*/
+
+insert into Generos(id_genero, genero)
+values(1, 'Ficcion');
+insert into Generos(id_genero, genero)
+values(2, 'Romance');
+
+insert into Peliculas(id_pelicula, pelicula, pel_id_genero)
+values(1234, 'Volver al futuro', 1);
+insert into Peliculas(id_pelicula, pelicula, pel_id_genero)
+values(2345, 'La boda de mi mejor amigo', 2);
+insert into Peliculas(id_pelicula, pelicula, pel_id_genero)
+values(4507, 'Hombres de negro 2', 1);
+
+INSERT ALL
+INTO Actores(id_actor, actor) VALUES (1, 'Michael J Fox')
+INTO Actores(id_actor, actor) VALUES (2, 'Christopher Lee Thompson')
+INTO Actores(id_actor, actor) VALUES (3, 'Julia Roberts')
+INTO Actores(id_actor, actor) VALUES (4, 'Dermont Mulroney')
+INTO Actores(id_actor, actor) VALUES (5, 'Cameron Diaz')
+INTO Actores(id_actor, actor) VALUES (6, 'Tommy Lee Jones')
+INTO Actores(id_actor, actor) VALUES (7, 'Will Smith')
+INTO Actores(id_actor, actor) VALUES (8, 'RIP Torn')
+SELECT * FROM dual;
+
+INSERT ALL
+INTO Peliculas_Actores (peliact_id_pelicula, peliact_id_actor) VALUES (1234, 1)
+INTO Peliculas_Actores (peliact_id_pelicula, peliact_id_actor) VALUES (1234, 2)
+INTO Peliculas_Actores (peliact_id_pelicula, peliact_id_actor) VALUES (2345, 3)
+INTO Peliculas_Actores (peliact_id_pelicula, peliact_id_actor) VALUES (2345, 4)
+INTO Peliculas_Actores (peliact_id_pelicula, peliact_id_actor) VALUES (2345, 5)
+INTO Peliculas_Actores (peliact_id_pelicula, peliact_id_actor) VALUES (4507, 6)
+INTO Peliculas_Actores (peliact_id_pelicula, peliact_id_actor) VALUES (4507, 7)
+INTO Peliculas_Actores (peliact_id_pelicula, peliact_id_actor) VALUES (4507, 8)
+Select * from dual;
+
+grant create view to victor;
+
+
+create view vista_info_peliculas as
+    (
+    select p.pelicula, g.genero
+    from Peliculas p
+    inner join Generos g on p.pel_id_genero = g.id_genero
+    );
+
+select * from vista_info_peliculas

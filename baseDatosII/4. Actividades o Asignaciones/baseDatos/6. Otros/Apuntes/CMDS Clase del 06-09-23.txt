@@ -1,0 +1,88 @@
+create table Actor(
+id_actor number not null,
+actor varchar(25) not null
+CONSTRAINT actor_pk primary key (ID_actor)
+);
+
+create table Genero(
+generoN varchar(25) not null,
+id_genero number not null,
+
+CONSTRAINT genero_pk primary key (ID_genero)
+);
+
+create table Pelicula (
+p_nombre varchar(25) not null,
+id_pelicula number not null,
+id_genero_pel number not null,
+
+CONSTRAINT pelicula_pk primary key (id_pelicula),
+
+CONSTRAINT pelicula_fk foreign key (id_genero_pel)
+references Genero(id_genero)
+);
+
+create table Pelicula_Actor(
+id_actor_peliact number not null,
+id_pelicula_peliact number not null,
+personaje varchar(25) not null,
+papel varchar(25) not null,
+
+CONSTRAINT pelicula_actor_fk1 foreign key (id_actor_peliact)
+References Actor(id_actor),
+
+CONSTRAINT pelicula_Actor_fk2 foreign key (id_pelicula_peliact)
+References Pelicula(id_pelicula),
+
+CONSTRAINT pelicula_actor_pk primary key (id_actor_peliact, id_pelicula_peliact)
+);
+
+ALTER table Pelicula_actor
+ADD CONSTRAINT Pelicula_Actor_PK (ID_actor_peliact, ID_pelicula_peliact);
+
+SELECT column_name
+FROM user_tab_columns
+WHERE table_name = 'Genero';
+
+insert into Genero(id_genero, generoN)
+values(1, 'Ficcion');
+insert into Genero(id_genero, generoN)
+values(2, 'Romance');
+
+INSERT INTO Pelicula(id_pelicula, p_nombre, id_genero_pel)
+VALUES
+(1234, 'Volver al futuro', 1);
+
+INSERT INTO Pelicula(id_pelicula, p_nombre, id_genero_pel)
+VALUES
+(2345, 'La boda de mi mejor amigo', 2);
+
+INSERT INTO Pelicula(id_pelicula, p_nombre, id_genero_pel)
+VALUES
+(4507, 'Hombres de negro 2', 1);
+
+INSERT INTO Actor (id_actor, actor)
+values (1, 'Michael J Fox'),(2, 'Christopher Lee Thompson');
+
+INSERT ALL
+INTO Actor (id_actor, actor) VALUES (1, 'Michael J Fox')
+INTO Actor (id_actor, actor) VALUES (2, 'Christopher Lee Thompson')
+INTO Actor (id_actor, actor) VALUES (3, 'Julia Roberts')
+INTO Actor (id_actor, actor) VALUES (4, 'Dermont Mulroney')
+INTO Actor (id_actor, actor) VALUES (5, 'Cameron Diaz')
+INTO Actor (id_actor, actor) VALUES (6, 'Tommy Lee Jones')
+INTO Actor (id_actor, actor) VALUES (7, 'Will Smith')
+INTO Actor (id_actor, actor) VALUES (8, 'RIP Torn')
+SELECT * FROM dual;
+
+
+INSERT ALL
+INTO Pelicula_Actor (id_pelicula_peliact, id_actor_peliact, personaje, papel) values (1234, 1, 'unknown', 'unknown')
+INTO Pelicula_Actor (id_pelicula_peliact, id_actor_peliact, personaje, papel) values (1234, 2, 'unknown', 'unknown')
+INTO Pelicula_Actor (id_pelicula_peliact, id_actor_peliact, personaje, papel) values (2345, 3, 'unknown', 'unknown')
+INTO Pelicula_Actor (id_pelicula_peliact, id_actor_peliact, personaje, papel) values (2345, 4, 'unknown', 'unknown')
+INTO Pelicula_Actor (id_pelicula_peliact, id_actor_peliact, personaje, papel) values (2345, 5, 'unknown', 'unknown')
+INTO Pelicula_Actor (id_pelicula_peliact, id_actor_peliact, personaje, papel) values (4507, 6, 'unknown', 'unknown')
+INTO Pelicula_Actor (id_pelicula_peliact, id_actor_peliact, personaje, papel) values (4507, 7, 'unknown', 'unknown')
+INTO Pelicula_Actor (id_pelicula_peliact, id_actor_peliact, personaje, papel) values (4507, 8, 'unknown', 'unknown')
+Select * FROM dual;
